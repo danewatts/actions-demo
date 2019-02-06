@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,8 +12,22 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@(headingKey: String, headingSize: String = "heading-large")(implicit messages: Messages)
+package connectors
 
-<h1 class="@headingSize">@messages(headingKey)</h1>
+import com.google.inject.Inject
+import config.Http
+import models.ResponseModel
+import uk.gov.hmrc.http.HeaderCarrier
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+
+class BackendConnector @Inject()(http: Http) {
+
+  def getData(id: String)(implicit hc: HeaderCarrier): Future[ResponseModel] = {
+    http.GET[ResponseModel]("")
+  }
+
+}
