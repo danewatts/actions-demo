@@ -21,14 +21,10 @@ import connectors.BackendConnector
 import controllers.actions.AuthenticatedAction
 import javax.inject.Inject
 import models.ResponseModel.{FailureResponseModel, SuccessfulResponseModel}
-import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.auth.core.retrieve.Retrievals
-import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import views.html.{index, unauthorised}
-import uk.gov.hmrc.auth.core.retrieve.~
 
 class IndexController @Inject()(
                                  appConfig: FrontendAppConfig,
@@ -39,23 +35,11 @@ class IndexController @Inject()(
 
   def onPageLoad: Action[AnyContent] = authenticate.async {
     implicit request =>
-      authorised(ConfidenceLevel.L200).retrieve(Retrievals.nino and Retrievals.credentials and Retrievals.confidenceLevel and Retrievals.description) {
-        case nino ~ credentials ~ confidenceLevel ~ description =>
-          connector.getData("").map {
-            case data: SuccessfulResponseModel =>
-              Ok(index(appConfig, data))
-            case data: FailureResponseModel =>
-              InternalServerError(unauthorised(appConfig))
-          }
-      } recover {
-        case _: NoActiveSession =>
-          Redirect(routes.SessionExpiredController.onPageLoad())
-        case _: InsufficientConfidenceLevel =>
-          Redirect(routes.UnauthorisedController.onPageLoad())
-        case e: Exception =>
-          //go to tech error page
-          Logger.error("Nah", e)
-          InternalServerError("error page")
+      connector.getData("").map {
+        case data: SuccessfulResponseModel =>
+          Ok(index(appConfig, data))
+        case data: FailureResponseModel =>
+          InternalServerError(unauthorised(appConfig))
       }
   }
 }
