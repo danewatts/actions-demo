@@ -20,7 +20,11 @@ import com.google.inject.Inject
 import controllers.routes
 import models.requests.AuthenticatedRequest
 import play.api.Logger
+<<<<<<< HEAD
 import play.api.mvc._
+=======
+import play.api.mvc.{ActionBuilder, ActionRefiner, Request, Result}
+>>>>>>> AuthRefiner: Seperated auth to an action and embedded data in request
 import uk.gov.hmrc.auth.core.retrieve.{Retrievals, ~}
 import uk.gov.hmrc.auth.core._
 import play.api.mvc.Results._

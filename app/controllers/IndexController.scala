@@ -21,14 +21,10 @@ import connectors.BackendConnector
 import controllers.actions.{AuthenticatedAction, OptionalDataTransformer}
 import javax.inject.Inject
 import models.ResponseModel.{FailureResponseModel, SuccessfulResponseModel}
-import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.auth.core.retrieve.Retrievals
-import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import views.html.{index, unauthorised}
-import uk.gov.hmrc.auth.core.retrieve.~
 
 class IndexController @Inject()(
                                  appConfig: FrontendAppConfig,
