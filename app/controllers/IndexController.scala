@@ -23,17 +23,15 @@ import javax.inject.Inject
 import models.ResponseModel.{FailureResponseModel, SuccessfulResponseModel}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import views.html.{index, unauthorised}
 
 class IndexController @Inject()(
                                  appConfig: FrontendAppConfig,
                                  val messagesApi: MessagesApi,
-                                 val authConnector: AuthConnector,
                                  connector: BackendConnector,
                                  authenticate: AuthenticatedActionRefiner
-                               ) extends FrontendController with I18nSupport with AuthorisedFunctions {
+                               ) extends FrontendController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = authenticate.async {
     implicit request =>
