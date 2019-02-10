@@ -26,7 +26,7 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import views.html.{index, unauthorised}
 
 class IndexController @Inject()(
-                                 val appConfig: FrontendAppConfig,
+                                 appConfig: FrontendAppConfig,
                                  val messagesApi: MessagesApi,
                                  connector: BackendConnector
                                ) extends FrontendController with I18nSupport {
