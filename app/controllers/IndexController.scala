@@ -18,7 +18,11 @@ package controllers
 
 import config.FrontendAppConfig
 import connectors.BackendConnector
+<<<<<<< HEAD
 import controllers.actions.AuthenticatedAction
+=======
+import controllers.actions.{AuthenticatedActionRefiner, OptionalDataTransformer}
+>>>>>>> OptionalDataTransformer: Added data call to actions
 import javax.inject.Inject
 import models.ResponseModel.{FailureResponseModel, SuccessfulResponseModel}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,12 +34,13 @@ class IndexController @Inject()(
                                  appConfig: FrontendAppConfig,
                                  val messagesApi: MessagesApi,
                                  connector: BackendConnector,
-                                 authenticate: AuthenticatedAction
+                                 authenticate: AuthenticatedAction,
+                                 getData: OptionalDataTransformer
                                ) extends FrontendController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = authenticate.async {
+  def onPageLoad: Action[AnyContent] = (authenticate andThen getData) {
     implicit request =>
-      connector.getData("").map {
+      request.data match {
         case data: SuccessfulResponseModel =>
           Ok(index(appConfig, data))
         case data: FailureResponseModel =>
