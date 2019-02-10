@@ -18,29 +18,24 @@ package controllers
 
 import config.FrontendAppConfig
 import connectors.BackendConnector
-import controllers.actions.{AuthenticatedAction, OptionalDataTransformer}
+import controllers.actions.{AuthenticatedAction, OptionalDataTransformer, RequestDataFilter}
 import javax.inject.Inject
-import models.ResponseModel.{FailureResponseModel, SuccessfulResponseModel}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-import views.html.{index, unauthorised}
+import views.html.index
 
 class IndexController @Inject()(
                                  appConfig: FrontendAppConfig,
                                  val messagesApi: MessagesApi,
                                  connector: BackendConnector,
                                  authenticate: AuthenticatedAction,
-                                 getData: OptionalDataTransformer
+                                 getData: OptionalDataTransformer,
+                                 requireData: RequestDataFilter
                                ) extends FrontendController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (authenticate andThen getData) {
+  def onPageLoad: Action[AnyContent] = (authenticate andThen getData andThen requireData) {
     implicit request =>
-      request.data match {
-        case data: SuccessfulResponseModel =>
-          Ok(index(appConfig, data))
-        case data: FailureResponseModel =>
-          InternalServerError(unauthorised(appConfig))
-      }
+      Ok(index(appConfig, request.data))
   }
 }

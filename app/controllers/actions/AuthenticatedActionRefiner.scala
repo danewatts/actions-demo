@@ -20,18 +20,10 @@ import com.google.inject.Inject
 import controllers.routes
 import models.requests.AuthenticatedRequest
 import play.api.Logger
-<<<<<<< HEAD
-<<<<<<< HEAD
-import play.api.mvc._
-=======
-import play.api.mvc.{ActionBuilder, ActionRefiner, Request, Result}
->>>>>>> AuthRefiner: Seperated auth to an action and embedded data in request
-=======
-import play.api.mvc._
->>>>>>> OptionalDataTransformer: Added data call to actions
-import uk.gov.hmrc.auth.core.retrieve.{Retrievals, ~}
-import uk.gov.hmrc.auth.core._
 import play.api.mvc.Results._
+import play.api.mvc.{ActionBuilder, ActionRefiner, Request, Result}
+import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.retrieve.{Retrievals, ~}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
 
