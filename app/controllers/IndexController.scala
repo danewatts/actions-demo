@@ -18,7 +18,7 @@ package controllers
 
 import config.FrontendAppConfig
 import connectors.BackendConnector
-import controllers.actions.AuthenticatedActionRefiner
+import controllers.actions.AuthenticatedAction
 import javax.inject.Inject
 import models.ResponseModel.{FailureResponseModel, SuccessfulResponseModel}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,7 +30,7 @@ class IndexController @Inject()(
                                  appConfig: FrontendAppConfig,
                                  val messagesApi: MessagesApi,
                                  connector: BackendConnector,
-                                 authenticate: AuthenticatedActionRefiner
+                                 authenticate: AuthenticatedAction
                                ) extends FrontendController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = authenticate.async {

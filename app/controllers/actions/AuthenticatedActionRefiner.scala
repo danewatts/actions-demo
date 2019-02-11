@@ -31,7 +31,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class AuthenticatedActionRefiner @Inject()(
                                           val authConnector: AuthConnector
-                                          )(implicit ec: ExecutionContext) extends ActionRefiner[Request, AuthenticatedRequest] with ActionBuilder[AuthenticatedRequest] with AuthorisedFunctions {
+                                          )(implicit ec: ExecutionContext) extends AuthenticatedAction {
 
   override protected def refine[A](request: Request[A]): Future[Either[Result, AuthenticatedRequest[A]]] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
@@ -51,3 +51,5 @@ class AuthenticatedActionRefiner @Inject()(
     }
   }
 }
+
+trait AuthenticatedAction extends ActionRefiner[Request, AuthenticatedRequest] with ActionBuilder[AuthenticatedRequest] with AuthorisedFunctions
