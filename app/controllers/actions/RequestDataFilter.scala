@@ -27,10 +27,10 @@ import play.api.mvc.Results.InternalServerError
 
 import scala.concurrent.Future
 
-class RequestDataFilter @Inject()(
+class RequestDataFilterImpl @Inject()(
                                    appConfig: FrontendAppConfig,
                                    messages: MessagesApi
-                                 ) extends ActionFilter[OptionalDataRequest] {
+                                 ) extends RequestDataFilter {
   override protected def filter[A](request: OptionalDataRequest[A]): Future[Option[Result]] = {
     Future.successful(
       request.data match {
@@ -42,3 +42,5 @@ class RequestDataFilter @Inject()(
     )
   }
 }
+
+trait RequestDataFilter extends ActionFilter[OptionalDataRequest]
