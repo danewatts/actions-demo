@@ -35,7 +35,7 @@ class OptionalDataTransformerSpec extends SpecBase {
   lazy val mockBackendConnector: BackendConnector = mock[BackendConnector]
   val authenticatedRequest = AuthenticatedRequest(fakeRequest, Some("nino"), ConfidenceLevel.L200)
 
-  class FakeController extends OptionalDataTransformer(mockBackendConnector) {
+  class FakeController extends OptionalDataTransformerImpl(mockBackendConnector) {
     def callTransform[A](request: AuthenticatedRequest[A]): Future[OptionalDataRequest[A]] = transform(request)
   }
 
@@ -46,7 +46,7 @@ class OptionalDataTransformerSpec extends SpecBase {
         when(mockBackendConnector.getData(any())(any()))
           .thenReturn(Future.successful(response))
         val controller = new FakeController
-        val result = controller.callTransform(authenticatedRequest)
+        val result = await(controller.callTransform(authenticatedRequest))
         result mustBe OptionalDataRequest(authenticatedRequest.request, Some("nino"), ConfidenceLevel.L200, response)
       }
     }
@@ -64,7 +64,7 @@ class OptionalDataTransformerSpec extends SpecBase {
   }
 }
 
-object FakeOptionalDataTransformer extends OptionalDataTransformer(connector = ???) {
+object FakeOptionalDataTransformer extends OptionalDataTransformer {
   override def transform[A](request: AuthenticatedRequest[A]): Future[OptionalDataRequest[A]] = {
     Future.successful(OptionalDataRequest(request.request, request.nino, request.cl, SuccessfulResponseModel("", 1, None)))
   }

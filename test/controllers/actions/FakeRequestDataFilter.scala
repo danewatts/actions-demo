@@ -20,7 +20,7 @@ import play.api.mvc.Result
 
 import scala.concurrent.Future
 
-object FakeRequestDataFilter extends RequestDataFilter(???, ???) {
+object FakeRequestDataFilter extends RequestDataFilter {
 
   override def filter[A](request: OptionalDataRequest[A]): Future[Option[Result]] = {
     Future.successful(None)

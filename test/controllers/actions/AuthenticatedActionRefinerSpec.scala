@@ -44,7 +44,7 @@ class AuthenticatedActionRefinerSpec extends SpecBase {
         val controller = new FakeController(action)
         val result = controller.onPageLoad(fakeRequest)
         status(result) mustBe SEE_OTHER
-        redirectLocation(result) mustBe routes.SessionExpiredController.onPageLoad().url
+        redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
       }
 
       "Insufficient confidence level" in {
@@ -52,7 +52,7 @@ class AuthenticatedActionRefinerSpec extends SpecBase {
         val controller = new FakeController(action)
         val result = controller.onPageLoad(fakeRequest)
         status(result) mustBe SEE_OTHER
-        redirectLocation(result) mustBe routes.UnauthorisedController.onPageLoad().url
+        redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
       }
     }
 
@@ -73,8 +73,7 @@ class FakeFailingAuthConnector(exceptionToReturn: Throwable) extends AuthConnect
   }
 }
 
-object FakeAuthenticatedActionRefiner extends AuthenticatedActionRefiner(authConnector = ???) {
-
+object FakeAuthenticatedActionRefiner extends AuthenticatedAction {
   override protected def refine[A](request: Request[A]): Future[Either[Result, AuthenticatedRequest[A]]] = {
     Future.successful(Right(AuthenticatedRequest(request, Some("nino"), ConfidenceLevel.L200)))
   }

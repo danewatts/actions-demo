@@ -17,14 +17,24 @@
 package base
 
 import config.FrontendAppConfig
+import controllers.actions._
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice._
+import play.api.Application
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.Injector
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
+import play.api.inject.bind
 
 trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with MockitoSugar {
+
+  override implicit lazy val app: Application = new GuiceApplicationBuilder()
+    .overrides(bind[AuthenticatedAction].toInstance(FakeAuthenticatedActionRefiner))
+    .overrides(bind[OptionalDataTransformer].toInstance(FakeOptionalDataTransformer))
+    .overrides(bind[RequestDataFilter].toInstance(FakeRequestDataFilter))
+    .build()
 
   def injector: Injector = app.injector
 
