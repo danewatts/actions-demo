@@ -17,6 +17,7 @@
 package controllers
 
 import connectors.BackendConnector
+import controllers.actions.{FakeAuthenticatedActionRefiner, FakeOptionalDataTransformer, FakeRequestDataFilter}
 import models.ResponseModel.SuccessfulResponseModel
 import org.mockito.Matchers._
 import org.mockito.Mockito.when
@@ -31,13 +32,15 @@ class IndexControllerSpec extends ControllerSpecBase with FrontendController {
   "Index Controller" must {
     "return 200 for a GET" in {
       when(connector.getData(any())(any())).thenReturn(Future.successful(SuccessfulResponseModel("", 1, None)))
-      val result = new IndexController(frontendAppConfig, messagesApi, connector).onPageLoad()(fakeRequest)
+      val result = new IndexController(frontendAppConfig, messagesApi, connector, FakeAuthenticatedActionRefiner, FakeOptionalDataTransformer, FakeRequestDataFilter)
+        .onPageLoad()(fakeRequest)
       status(result) mustBe OK
     }
 
     "return the correct view for a GET" in {
       when(connector.getData(any())(any())).thenReturn(Future.successful(SuccessfulResponseModel("", 1, None)))
-      val result = new IndexController(frontendAppConfig, messagesApi, connector).onPageLoad()(fakeRequest)
+      val result = new IndexController(frontendAppConfig, messagesApi, connector, FakeAuthenticatedActionRefiner, FakeOptionalDataTransformer, FakeRequestDataFilter)
+        .onPageLoad()(fakeRequest)
       contentAsString(result) mustBe index(frontendAppConfig, SuccessfulResponseModel("", 1, None))(fakeRequest, messages).toString
     }
   }
