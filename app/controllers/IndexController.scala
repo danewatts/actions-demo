@@ -18,11 +18,7 @@ package controllers
 
 import config.FrontendAppConfig
 import connectors.BackendConnector
-<<<<<<< HEAD
-import controllers.actions.AuthenticatedAction
-=======
-import controllers.actions.{AuthenticatedActionRefiner, OptionalDataTransformer}
->>>>>>> OptionalDataTransformer: Added data call to actions
+import controllers.actions.{AuthenticatedAction, OptionalDataTransformer}
 import javax.inject.Inject
 import models.ResponseModel.{FailureResponseModel, SuccessfulResponseModel}
 import play.api.i18n.{I18nSupport, MessagesApi}

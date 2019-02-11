@@ -25,9 +25,9 @@ import uk.gov.hmrc.play.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class OptionalDataTransformer @Inject()(
+class OptionalDataTransformerImpl @Inject()(
                                          connector: BackendConnector
-                                       )(implicit ec: ExecutionContext) extends ActionTransformer[AuthenticatedRequest, OptionalDataRequest] {
+                                       )(implicit ec: ExecutionContext) extends OptionalDataTransformer {
   override protected def transform[A](request: AuthenticatedRequest[A]): Future[OptionalDataRequest[A]] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
     connector.getData("").map {
@@ -35,3 +35,5 @@ class OptionalDataTransformer @Inject()(
     }
   }
 }
+
+trait OptionalDataTransformer extends ActionTransformer[AuthenticatedRequest, OptionalDataRequest]
